@@ -1,9 +1,12 @@
-#pragma once
+#ifndef LAY_MATERIALS_H
+#define LAY_MATERIALS_H
 
 #include <QWidget>
 #include <QDialog>
+#include <QAbstractTableModel>
 
 #include "ui_LayMaterials.h"
+
 class Tables;
 class LayMaterialsModel : public QAbstractTableModel // модель для представления информации о материалах в таблице
 {
@@ -89,3 +92,5 @@ private slots:
 private:
 	Ui::LayMaterials ui;
 };
+
+#endif

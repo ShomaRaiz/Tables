@@ -1,7 +1,7 @@
 
 cmake_minimum_required(VERSION 3.10)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 14)
 
 project(Tables)
 
@@ -12,6 +12,7 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
 find_package(Qt5Widgets REQUIRED)
+find_package(pybind11 REQUIRED)
 
 set(SRC
     ${PROJECT_SOURCE_DIR}/LayMaterials.cpp
@@ -30,11 +31,16 @@ set(SRC
     ${PROJECT_SOURCE_DIR}/Tables.cpp
     ${PROJECT_SOURCE_DIR}/Tables.h
     ${PROJECT_SOURCE_DIR}/Tables.ui
+    ${PROJECT_SOURCE_DIR}/Python_bindings.cpp
+    ${PROJECT_SOURCE_DIR}/Python_bindings.h
+    ${PROJECT_SOURCE_DIR}/Paths.h
 )
 
 add_executable(${PROJECT_NAME} WIN32 ${SRC})
 
 target_link_libraries(${PROJECT_NAME} PRIVATE Qt5::Widgets)
+target_link_libraries(${PROJECT_NAME} PRIVATE pybind11::embed)
 
-# Installation
 install(TARGETS ${PROJECT_NAME} DESTINATION bin)
+
+
