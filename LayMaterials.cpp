@@ -1,9 +1,10 @@
-#include "LayMaterials.h"
 #include "QFile.h"
 #include "QTextStream.h"
 #include "QMessageBox.h"
 #include "QDir.h"
 #include "QFileDialog.h"
+
+#include "LayMaterials.h"
 #include "Tables.h"
 #include "REMP_OR_PERENOS.h"
 
@@ -69,16 +70,6 @@ LayMaterials::LayMaterials(Tables* table, QWidget *parent)
 
 	}
 
-	
-
-	QString appPath = qApp->applicationDirPath();
-	QDir appDir(appPath);
-	appDir.cdUp();
-	appPath = appDir.path();
-	table->p.mat = appPath + "/share/scripts/mat_files";
-	table->p.par = appPath + "/share/scripts/xrb_parameters.ini";
-	table->p.home = appPath + "/share/scripts";
-	table->p.rmp = path.replace("PRJ", "LTB");
 	int k;
 	k = path.lastIndexOf('/');
 	path.remove(k, path.size() - k);

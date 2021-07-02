@@ -2,6 +2,7 @@
 #include "QFile.h"
 #include "QTextStream.h"
 #include "QMessageBox.h"
+#include "Paths.h"
 
 PeriodicTable::PeriodicTable(QWidget *parent)
 	: QDialog(parent)

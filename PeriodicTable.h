@@ -1,9 +1,13 @@
-#pragma once
+#ifndef PRERIODIC_TABLES
+#define PRERIODIC_TABLES
 
 #include <QWidget>
 #include <QDialog.h>
-#include "ui_PeriodicTable.h"
 #include "QAbstractTableModel"
+
+#include "ui_PeriodicTable.h"
+#include "Paths.h"
+
 
 class PeriodicTableModel : public QAbstractTableModel // модель для представления периодической таблицы
 {
@@ -49,3 +53,5 @@ private slots:
 private:
 	Ui::PeriodicTable ui;
 };
+
+#endif

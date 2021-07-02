@@ -1,4 +1,5 @@
-#pragma once
+#ifndef NEW_COMPOSITE_H
+#define NEW_COMPOSITE_H
 
 #include <QWidget>
 #include <QDialog.h>
@@ -33,3 +34,5 @@ private slots:
 private:
 	Ui::NewComposite ui;
 };
+
+#endif

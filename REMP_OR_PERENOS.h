@@ -1,4 +1,5 @@
-#pragma once
+#ifndef REMP_ON_PRERENOS_H
+#define REMP_ON_PRERENOS_H
 
 #include <QDialog>
 #include "ui_REMP_OR_PERENOS.h"
@@ -18,3 +19,5 @@ private slots:
 private:
 	Ui::REMP_OR_PERENOS ui;
 };
+
+#endif
