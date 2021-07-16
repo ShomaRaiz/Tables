@@ -7,6 +7,7 @@
 #include "PeriodicTable.h"
 #include "NewComposite.h"
 #include "LayMaterials.h"
+#include "Parameters.h"
 
 
 
@@ -18,6 +19,10 @@ Tables::Tables(QWidget *parent)
 	connect(ui.openPRJ_pb, SIGNAL(clicked()), this, SLOT(OnOpenPRJ()));
 	connect(ui.editFile_pb, SIGNAL(clicked()), this, SLOT(OnEditFile()));
 	connect(ui.calcDist_pb, SIGNAL(clicked()), this, SLOT(OnCalcDist()));
+	connect(ui.action_6, SIGNAL(triggered()), this, SLOT(OnParameters()));
+	connect(ui.action_4, SIGNAL(triggered()), this, SLOT(OnExit()));
+	connect(ui.action_5, SIGNAL(triggered()), this, SLOT(OnGraphs()));
+
 
 	init_paths();
 }
@@ -91,4 +96,29 @@ void Tables::OnGetDist()
 	Python python = Python();
 	python.getDistributions(p);
 
+}
+
+/////////////////////////////////////////////////////////////////////////////
+// Вызов окна "Параметры"
+//
+void Tables::OnParameters()
+{
+	Parameters dlg(this);
+	dlg.exec();
+}
+
+/////////////////////////////////////////////////////////////////////////////
+// Выход
+//
+void Tables::OnExit()
+{
+	this->close();
+}
+
+/////////////////////////////////////////////////////////////////////////////
+// Графики
+//
+void Tables::OnGraphs()
+{
+	
 }

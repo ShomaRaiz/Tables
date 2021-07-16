@@ -3,6 +3,7 @@
 #include "QTextStream.h"
 #include "QMessageBox.h"
 #include "Paths.h"
+#include "QDir.h"
 
 PeriodicTable::PeriodicTable(QWidget *parent)
 	: QDialog(parent)
@@ -33,8 +34,11 @@ PeriodicTable::~PeriodicTable()
 //
 int PeriodicTable::readElements()
 {
-	
-	QFile file("PeriodTable.txt");
+	QString appPath = qApp->applicationDirPath();
+	QDir dir(appPath);
+	dir.cdUp();
+	QString elements_f = dir.path() + "/share/scripts/elements";
+	QFile file(elements_f);
 	if (!file.open(QFile::ReadOnly | QFile::Text)) {
 		QMessageBox::warning(this, tr("Manager"),
 			QString("Не удается прочитать файл %1:\n%2.")
@@ -52,6 +56,7 @@ int PeriodicTable::readElements()
 		in >> a;
 		number.append(a);
 		name.append(b);
+		in.readLine();
 		if (in.atEnd())
 			break;
 	}
