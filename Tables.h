@@ -24,6 +24,9 @@ private slots:
     void OnEditFile(); // При нажатии на кнопку "Редактировать файл оболочек"
     void OnCalcDist(); // При нажатии на кнопку "Рассчитать распределение"
     void OnGetDist();  // При нажатии на кнопку "Получить распределение для РЭМП"
+    void OnParameters();  // При вызове окна "Параметры"
+    void OnExit();
+    void OnGraphs(); // Графики
 private:
     Ui::TablesClass ui;
     void init_paths();

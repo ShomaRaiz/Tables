@@ -22,6 +22,9 @@ set(SRC
     ${PROJECT_SOURCE_DIR}/NewComposite.cpp
     ${PROJECT_SOURCE_DIR}/NewComposite.h
     ${PROJECT_SOURCE_DIR}/NewComposite.ui
+    ${PROJECT_SOURCE_DIR}/Parameters.cpp
+    ${PROJECT_SOURCE_DIR}/Parameters.h
+    ${PROJECT_SOURCE_DIR}/Parameters.ui
     ${PROJECT_SOURCE_DIR}/PeriodicTable.cpp
     ${PROJECT_SOURCE_DIR}/PeriodicTable.h
     ${PROJECT_SOURCE_DIR}/PeriodicTable.ui

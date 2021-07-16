@@ -254,10 +254,10 @@ int LayMaterials::readLayers(QString path)
 void LayMaterials::checkMatFiles()
 {
 	QString appPath = qApp->applicationDirPath();
-	int index = appPath.lastIndexOf("/");
-	appPath.remove(index + 1, appPath.size() + 1);
+	QDir dir(appPath);
+	dir.cdUp();
 
-	const QString matFilesFolder = appPath + "share/scripts/mat_files";
+	const QString matFilesFolder = dir.path() + "/share/scripts/mat_files";
 
 	QDir matFiles(matFilesFolder);
 	QStringList matFileList = matFiles.entryList(QStringList() << "*.mrat" << "*.MRAT", QDir::Files);
@@ -383,7 +383,7 @@ void LayMaterials::ReadConfig()
 	char key_word[256], element[256];
 	char s[128];
 	char value[64];
-	if (!file.open(QFile::ReadOnly | QFile::Text))
+	if (file.open(QFile::ReadOnly | QFile::Text))
 	{
 		bufQStr = in_configfile.readLine();
 		QByteArray bufa = bufQStr.toLocal8Bit();
