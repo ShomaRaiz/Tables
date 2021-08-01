@@ -1,6 +1,7 @@
 #ifndef TABLES_H
 #define TABLES_H
 
+
 #include "Paths.h"
 #include "ui_Tables.h"
 
@@ -13,6 +14,7 @@ class Tables : public QMainWindow
 
 public:
     Tables(QWidget* parent = Q_NULLPTR);
+    ~Tables();
 public:
     QString PRJpath; //путь к папке проекта
     Paths p; // необходимые пути

@@ -1,9 +1,8 @@
-#include <pybind11/pybind11.h>  // Инклюдить первым, чтобы занять нулевой слот!
 
 #include "QDir.h"
 
-#include "Tables.h"
 #include "Python_bindings.h"
+#include "Tables.h"
 #include "PeriodicTable.h"
 #include "NewComposite.h"
 #include "LayMaterials.h"
@@ -19,12 +18,19 @@ Tables::Tables(QWidget *parent)
 	connect(ui.openPRJ_pb, SIGNAL(clicked()), this, SLOT(OnOpenPRJ()));
 	connect(ui.editFile_pb, SIGNAL(clicked()), this, SLOT(OnEditFile()));
 	connect(ui.calcDist_pb, SIGNAL(clicked()), this, SLOT(OnCalcDist()));
+	connect(ui.getDist_pb, SIGNAL(clicked()), this, SLOT(OnGetDist()));
 	connect(ui.action_6, SIGNAL(triggered()), this, SLOT(OnParameters()));
 	connect(ui.action_4, SIGNAL(triggered()), this, SLOT(OnExit()));
 	connect(ui.action_5, SIGNAL(triggered()), this, SLOT(OnGraphs()));
 
 
 	init_paths();
+	PythonBinds::start_interpreteter();
+	PythonBinds::initiateInterpritater(p.home.toStdString());
+}
+
+Tables::~Tables() {
+	PythonBinds::finalize_interpreteter();
 }
 
 
@@ -81,10 +87,9 @@ void Tables::OnEditFile()
 //
 void Tables::OnCalcDist()
 {
-	Python python = Python();
-	python.calcDistributions(p);
-	calcDist = true; // рассчет распередления завершился успешно
-	if (calcDist)
+	calcDist = PythonBinds::calcDistribution(p); // рассчет распередления завершился успешно
+
+	if (!calcDist)
 		ui.getDist_pb->setEnabled(true);
 }
 
@@ -93,9 +98,7 @@ void Tables::OnCalcDist()
 //
 void Tables::OnGetDist()
 {
-	Python python = Python();
-	python.getDistributions(p);
-
+	auto result = PythonBinds::getDistribution(p);
 }
 
 /////////////////////////////////////////////////////////////////////////////

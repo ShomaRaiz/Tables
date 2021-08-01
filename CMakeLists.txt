@@ -39,6 +39,8 @@ set(SRC
     ${PROJECT_SOURCE_DIR}/Paths.h
 )
 
+#ADD_DEFINITIONS(-DQT_NO_KEYWORDS)
+
 add_executable(${PROJECT_NAME} WIN32 ${SRC})
 
 target_link_libraries(${PROJECT_NAME} PRIVATE Qt5::Widgets)

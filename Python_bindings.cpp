@@ -1,67 +1,139 @@
-#include "Python_bindings.h"
+#include <pybind11/embed.h> // everything needed for embedding
+#include <pybind11/eval.h>
+
+#include "Paths.h"
+
 #include <string>
-#include<QDebug>
 
 
 namespace py = pybind11;
 using namespace pybind11::literals;
 
 
-Python::Python() {
-    }
+class Python
+{
+public:
+    py::module_ xtb;
+
+    Python(std::string scriptsDir);
+    ~Python();
+
+    bool checkImportedModules(std::string importedModuleName);
+
+    void calcDistributions(Paths& paths);
+
+    void getDistributions(Paths& paths);
+
+};
+
+
+Python::Python(std::string scriptsDir)
+{
+
+    //py::scoped_interpreter guard{};
+
+    py::module_ sys = py::module_::import("sys");
+    sys.attr("path").attr("append")(scriptsDir); // append REPM//share//scripts//.
+
+    xtb = py::module_::import("xtb_c_plus_plus_bindings");
+};
 
 Python::~Python() {
+    //std::cout << "==================================================" << std::endl;
 }
 
+bool Python::checkImportedModules(std::string importedModuleName) {
 
-void Python::calcDistributions(Paths& path) {
-    py::scoped_interpreter guard{};
-    
     py::module_ sys = py::module_::import("sys");
-    
-    std::string ad = path.home.toStdString();
-    sys.attr("path").attr("append")(path.home.toStdString()); // append REPM//share//scripts//.
+    py::list modules = sys.attr("modules");
 
+    for (auto item : modules)
+        if (item.cast<std::string>() == importedModuleName) return true;
 
-    py::module_ ex = py::module_::import("xtb_c_plus_plus_bindings");
+    return false;
+}
 
-
+void Python::calcDistributions(Paths& paths) {
     py::dict start_kwargs = py::dict(
-        "mat"_a = path.mat.toStdString(),
-        "par"_a = path.par.toStdString(),
-        "home"_a = path.home.toStdString(),
-        "proj"_a = path.proj.toStdString(),
-        "rmp"_a = path.rmp.toStdString(),
-        "tab"_a = path.tab.toStdString(),
-        "lay"_a = path.lay.toStdString(),
-        "photon"_a = path.photon,
-        "electron"_a = path.electron);
+        "mat"_a = paths.mat.toStdString(),
+        "par"_a = paths.par.toStdString(),
+        "home"_a = paths.home.toStdString(),
+        "proj"_a = paths.proj.toStdString(),
+        "rmp"_a = paths.rmp.toStdString(),
+        "tab"_a = paths.tab.toStdString(),
+        "lay"_a = paths.lay.toStdString(),
+        "photon"_a = paths.photon,
+        "electron"_a = paths.electron);
 
-    ex.attr("calc_distributions")(**start_kwargs);
+
+    xtb.attr("calc_distributions")(**start_kwargs);
+}
+
+void Python::getDistributions(Paths& paths) {
+    py::dict start_kwargs = py::dict(
+        "mat"_a = paths.mat.toStdString(),
+        "par"_a = paths.par.toStdString(),
+        "home"_a = paths.home.toStdString(),
+        "proj"_a = paths.proj.toStdString(),
+        "rmp"_a = paths.proj.toStdString() + "/asd",
+        "tab"_a = paths.tab.toStdString(),
+        "lay"_a = paths.lay.toStdString(),
+        "photon"_a = paths.photon,
+        "electron"_a = paths.electron);
+
+
+    xtb.attr("get_distributions")(**start_kwargs);
 }
 
 
-void Python::getDistributions(Paths& path) {
-    py::scoped_interpreter guard{};
-    
-    py::module_ sys = py::module_::import("sys");
-    
-    std::string ad = path.home.toStdString();
-    sys.attr("path").attr("append")(path.home.toStdString()); // append REPM//share//scripts//.
+namespace PythonBinds {
 
-    py::module_ ex = py::module_::import("xtb_c_plus_plus_bindings");
+    Python* python;
 
-    py::dict start_kwargs = py::dict(
-        "mat"_a = path.mat.toStdString(),
-        "par"_a = path.par.toStdString(),
-        "home"_a = path.home.toStdString(),
-        "proj"_a = path.proj.toStdString(),
-        "rmp"_a = path.rmp.toStdString(),
-        "tab"_a = path.tab.toStdString(),
-        "lay"_a = path.lay.toStdString(),
-        "photon"_a = path.photon,
-        "electron"_a = path.electron);
+    void start_interpreteter() {
+        py::initialize_interpreter();
+    }
 
-    ex.attr("get_distributions")(**start_kwargs);
+    void initiateInterpritater(std::string scriptsPath) {
+        python = new Python(scriptsPath);
+    }
+
+    void finalize_interpreteter() {
+        delete& python;
+        py::finalize_interpreter();
+    }
+
+    int calcDistribution(Paths& paths) {
+        python->calcDistributions(paths);
+        return 0;
+
+        //try
+        //{
+        //}
+        //catch (const std::exception&)
+        //{
+        //    return 1;
+        //}
+
+    }
+
+
+    int getDistribution(Paths& paths) {
+
+        python->getDistributions(paths);
+        return 0;
+
+        //try
+        //{
+        //}
+        //catch (const std::exception&)
+        //{
+        //    return 1;
+        //}
+
+    }
+
 }
+
+
 
